@@ -8,15 +8,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { StyledPaper } from './ui/StyledPaper';
 import { StyledTextField } from './ui/StyledTextField';
 import { StyledButton } from './ui/StyledButton';
-
-
-const StyledCheckbox = styled(Checkbox)({
-  color: '#6B4EE8',
-  '&.Mui-checked': {
-    color: '#9E88FF',
-  },
-});
-
+import { useRouter } from 'next/navigation';
 
 interface SignUpFormValues {
   username: string;
@@ -36,11 +28,16 @@ export default function SignUpForm() {
 
     const [message, setMessage] = useState<string | null>(null);
 
+    const router = useRouter();
+
     const onSubmit = async (data: SignUpFormValues) => {
         try{
             const res = await axiosInstance.post('/auth/signup', data);
             setMessage(`User ${res.data.username} created successfully!`);
             reset();
+            setTimeout(() => {
+                router.push('/login');
+            }, 2000);
         } catch (error: any) {
             if(error.response) {
                 setMessage(error.response.data.message || "An error occurred during signup.");
@@ -67,7 +64,7 @@ export default function SignUpForm() {
             Welcome to my app
           </Typography>
           <Typography variant="body2" sx={{ color: '#8A8A9A' }}>
-            Kindly fill in your details below to create an account
+            Fill in your details below to create an account
           </Typography>
         </Box>
 
@@ -165,6 +162,9 @@ export default function SignUpForm() {
           <StyledButton type="submit" fullWidth>
             Register Account
           </StyledButton>
+          <Typography variant="body2" sx={{ mt: 2, textAlign: 'center', color: '#8A8A9A' }}>
+            Already have an account? <a href="/login" style={{ color: '#6B4EE8' }}>Login</a>
+          </Typography>
         </form>
       </StyledPaper>
     </Box>
