@@ -1,6 +1,8 @@
 package com.example.movie.app.controller;
 
-import com.example.movie.app.dto.SignUpDto;
+import com.example.movie.app.dto.LoginRequest;
+import com.example.movie.app.dto.LoginResponse;
+import com.example.movie.app.dto.SignUpRequest;
 import com.example.movie.app.entity.User;
 import com.example.movie.app.service.AuthService;
 import jakarta.validation.Valid;
@@ -18,8 +20,13 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@Valid @RequestBody SignUpDto dto){
-        User user = authService.signup(dto);
+    public ResponseEntity<User> signup(@Valid @RequestBody SignUpRequest request){
+        User user = authService.signup(request);
         return ResponseEntity.ok(user);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
+        return ResponseEntity.ok(authService.login(request));
     }
 }

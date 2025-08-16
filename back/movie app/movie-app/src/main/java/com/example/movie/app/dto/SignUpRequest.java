@@ -1,10 +1,9 @@
 package com.example.movie.app.dto;
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class SignUpDto {
+public class SignUpRequest {
 
     @NotBlank
     private String username;
