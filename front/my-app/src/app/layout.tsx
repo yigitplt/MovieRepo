@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import MuiThemeProvider from "@/src/providers/MuiThemeProvider";
+import NavbarWrapper from "../components/NavbarWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,10 +24,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body>
+    <html lang="en">
+      <body suppressHydrationWarning>
         <MuiThemeProvider>
+          <NavbarWrapper />
           {children}
         </MuiThemeProvider>
       </body>
