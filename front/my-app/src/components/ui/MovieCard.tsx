@@ -1,13 +1,15 @@
-import { Card, CardMedia, CardContent, Typography } from "@mui/material";
+import { Card, CardMedia, CardContent, Typography, Link } from "@mui/material";
 
 type MovieCardProps = {
+  id: number;
   title: string;
   posterPath: string;
   voteAverage: number;
 };
 
-export default function MovieCard({ title, posterPath, voteAverage }: MovieCardProps) {
+export default function MovieCard({ id, title, posterPath, voteAverage }: MovieCardProps) {
   return (
+    <Link href={`/movie/${id}`} style={{ textDecoration: "none" }}>
     <Card sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
       <CardMedia
         component="img"
@@ -24,5 +26,6 @@ export default function MovieCard({ title, posterPath, voteAverage }: MovieCardP
         </Typography>
       </CardContent>
     </Card>
+    </Link>
   );
 }

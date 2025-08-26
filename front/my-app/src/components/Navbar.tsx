@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <AppBar position="static" sx={{ bgcolor: "primary.main" }}>
+    <AppBar position="static" sx={{ background: 'linear-gradient(90deg, #6B4EE8 0%, #9E88FF 100%)'}}>
       <Toolbar>
         
         <Typography variant="h6" sx={{ flexGrow: 1 }}>

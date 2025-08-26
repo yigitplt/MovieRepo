@@ -24,3 +24,11 @@ export async function getTopRatedMovies() {
 export async function getUpcomingMovies() {
   return fetchFromTMDB("/movie/upcoming");
 }
+
+export async function getMovieDetails(id: number) {
+  return fetchFromTMDB(`/movie/${id}`);
+}
+
+export async function getMovieCredits(id: number) {
+  return fetchFromTMDB(`/movie/${id}/credits`);
+}

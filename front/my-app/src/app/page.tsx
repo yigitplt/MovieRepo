@@ -21,6 +21,7 @@ export default async function Home() {
         {data.results.map((movie: Movie) => (
           <Grid size={{ xs: 6, sm: 4, md: 2.4 }} key={movie.id}>
             <MovieCard
+              id={movie.id}
               title={movie.title}
               posterPath={movie.poster_path}
               voteAverage={movie.vote_average}
