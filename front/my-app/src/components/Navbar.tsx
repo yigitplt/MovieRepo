@@ -8,13 +8,13 @@ export default function Navbar() {
     <AppBar position="static" sx={{ background: 'linear-gradient(90deg, #6B4EE8 0%, #9E88FF 100%)'}}>
       <Toolbar>
         
-        <Typography variant="h6" sx={{ flexGrow: 1 }}>
-          MyApp
+        <Typography variant="h6" sx={{ flexGrow: 1 }} component={Link} href="/">
+          MovieRepo
         </Typography>
 
         <Box>
-          <Button color="inherit" component={Link} href="/">
-            Home
+          <Button color="inherit" component={Link} href="/search">
+            Search
           </Button>
           <Button color="inherit" component={Link} href="/profile">
             Profile
