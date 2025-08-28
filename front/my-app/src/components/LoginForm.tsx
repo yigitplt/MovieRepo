@@ -31,7 +31,7 @@ export default function LoginForm() {
         try {
             const res = await axiosInstance.post('/auth/login', data);
             localStorage.setItem('token', res.data.token);
-            router.push('/dashboard');
+            router.push('/');
         } catch (error: any) {
             if(error.response) {
                 setMessage(error.response.data.message || "Wrong username or password.");
