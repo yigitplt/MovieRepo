@@ -1,5 +1,6 @@
 package com.example.movie.app.service;
 
+import com.example.movie.app.dto.RatingRequest;
 import com.example.movie.app.entity.Rating;
 import com.example.movie.app.entity.User;
 import com.example.movie.app.repository.RatingRepository;
@@ -13,18 +14,18 @@ import java.util.Optional;
 public class RatingService {
     private final RatingRepository ratingRepository;
 
-    public Rating rateMovie(User user, Long movieId, Double rating){
-        boolean isRated = ratingRepository.existsByMovieIdAndUser(movieId, user);
+    public Rating rateMovie(User user, RatingRequest request) {
+        boolean isRated = ratingRepository.existsByMovieIdAndUser(request.getMovieId(), user);
 
         if(isRated){
-            Rating previousRating = ratingRepository.findByMovieIdAndUser(movieId, user).get();
-            previousRating.setRating(rating);
+            Rating previousRating = ratingRepository.findByMovieIdAndUser(request.getMovieId(), user).get();
+            previousRating.setRating(request.getRating());
             return ratingRepository.save(previousRating);
         }else{
             Rating newRating = new Rating();
             newRating.setUser(user);
-            newRating.setMovieId(movieId);
-            newRating.setRating(rating);
+            newRating.setMovieId(request.getMovieId());
+            newRating.setRating(request.getRating());
             return ratingRepository.save(newRating);
         }
     }

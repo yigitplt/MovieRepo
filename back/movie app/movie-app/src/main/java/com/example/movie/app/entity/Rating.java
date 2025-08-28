@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +27,12 @@ public class Rating {
 
     @Column
     private Long movieId;
+
+    @Column
+    private LocalDate watchDate;
+
+    @Column(columnDefinition = "TEXT")
+    private String comment;
 
     @Column
     @Min(0)
