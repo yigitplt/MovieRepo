@@ -27,7 +27,7 @@ export default async function MovieDetails({ params }: MovieDetailsProps) {
 
           {/* Your custom button */}
           <Link href={`/movie/${params.id}/log`} style={{ textDecoration: "none", width: "100%" }}>
-            <StyledButton>
+            <StyledButton fullWidth>
               Add to your repo
             </StyledButton>
           </Link>

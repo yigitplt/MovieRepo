@@ -58,10 +58,10 @@ export default function MovieLog({movieId}: {movieId: number}) {
             <Box
                 component="form"
                 onSubmit={handleSubmit}
-                sx={{ mt: 3, p: 2, border: '1px solid #ccc', borderRadius: '8px' }}
+                sx={{p: 2, border: '1px solid #ccc', borderRadius: '8px' }}
             >
                 <Stack spacing={3}>
-                    <Typography variant="h6">Log this Movie</Typography>
+                    <Typography variant="h6">Add This Movie To Your Repo</Typography>
 
                     <div>
                         <Typography component="legend">Your Rating</Typography>
@@ -99,6 +99,7 @@ export default function MovieLog({movieId}: {movieId: number}) {
                     />
 
                     {error && <Typography color="error">{error}</Typography>}
+                    {!error && <Typography color="success">Saved Successfully!</Typography>}
 
                     <StyledButton type="submit" variant="contained" size="large">
                         Save
