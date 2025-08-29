@@ -1,17 +1,27 @@
 "use client";
 
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import axiosInstance from "../lib/axiosInstance";
+import { ca } from "date-fns/locale";
 
 export default function Navbar() {
 
   const router = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
+  const handleLogout = async () => {
+    try{
+      const res = await axiosInstance.post('/auth/logout');
+      if(res.status === 200){
+        router.push('/login');
+      }
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
 
-    router.push('/login');
+    
   }
 
 

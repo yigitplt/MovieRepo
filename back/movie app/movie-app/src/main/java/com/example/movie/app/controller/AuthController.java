@@ -5,6 +5,7 @@ import com.example.movie.app.dto.LoginResponse;
 import com.example.movie.app.dto.SignUpRequest;
 import com.example.movie.app.entity.User;
 import com.example.movie.app.service.AuthService;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,4 +30,12 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
         return ResponseEntity.ok(authService.login(request));
     }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(HttpServletResponse response){
+        authService.logout(response);
+        return ResponseEntity.ok().build();
+    }
+
+
 }

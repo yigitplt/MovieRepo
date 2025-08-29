@@ -5,12 +5,17 @@ import com.example.movie.app.dto.LoginResponse;
 import com.example.movie.app.dto.SignUpRequest;
 import com.example.movie.app.entity.User;
 import com.example.movie.app.repository.UserRepository;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 @Service
 @RequiredArgsConstructor
@@ -44,6 +49,26 @@ public class AuthService {
         UserDetails user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
         String jwt = jwtService.generateToken(user);
-        return LoginResponse.builder().token(jwt).build();
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        Cookie jwtCookie = new Cookie("jwt", jwt);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(false); // Should be true in production
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(24 * 60 * 60); // e.g., 1 day
+        response.addCookie(jwtCookie);
+        return LoginResponse.builder().token("Success").build();
+    }
+
+    public void logout(HttpServletResponse response) {
+
+        SecurityContextHolder.clearContext();
+
+
+        Cookie jwtCookie = new Cookie("jwt", null);
+        jwtCookie.setHttpOnly(true);
+        jwtCookie.setSecure(false); // Must match the secure setting of the original cookie
+        jwtCookie.setPath("/");
+        jwtCookie.setMaxAge(0);
+        response.addCookie(jwtCookie);
     }
 }

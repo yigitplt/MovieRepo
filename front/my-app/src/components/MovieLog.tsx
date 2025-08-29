@@ -16,25 +16,21 @@ import { StyledTextField } from "./ui/StyledTextField";
 import { StyledButton } from "./ui/StyledButton";
 import { styled } from "@mui/material";
 import theme from "@/theme";
+import { set } from "date-fns";
+import { StyledRating } from "./ui/Styledrating";
 
-const StyledRating = styled(Rating)({
-  '& .MuiRating-iconFilled': {
-    color: theme.palette.primary.main,
-  },
-  '& .MuiRating-iconHover': {
-    color: theme.palette.secondary.main,
-  },
-});
 
 export default function MovieLog({movieId}: {movieId: number}) {
     const [rating, setRating] = useState<number | null>(null);
     const [review, setReview] = useState<string>("");
     const [watchDate, setWatchDate] = useState(new Date());
     const [error, setError] = useState<string | null>(null);
+    const [success, setSuccess] = useState<boolean>(false);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setSuccess(false);
 
         const payload = {
             movieId: movieId,
@@ -46,7 +42,7 @@ export default function MovieLog({movieId}: {movieId: number}) {
         try {
             const response = await axiosInstance.post('/ratings', payload);
 
-            console.log('Log submitted successfully:', response.data);
+            setSuccess(true);
         } catch (err) {
             console.error('Failed to submit log:', err);
             setError('Failed to submit your log. Please try again.');
@@ -99,7 +95,7 @@ export default function MovieLog({movieId}: {movieId: number}) {
                     />
 
                     {error && <Typography color="error">{error}</Typography>}
-                    {!error && <Typography color="success">Saved Successfully!</Typography>}
+                    {success && <Typography color="success">Saved Successfully!</Typography>}
 
                     <StyledButton type="submit" variant="contained" size="large">
                         Save

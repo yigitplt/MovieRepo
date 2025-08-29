@@ -30,7 +30,6 @@ export default function LoginForm() {
     const onSubmit = async (data: LoginFormValues) => {
         try {
             const res = await axiosInstance.post('/auth/login', data);
-            localStorage.setItem('token', res.data.token);
             router.push('/');
         } catch (error: any) {
             if(error.response) {

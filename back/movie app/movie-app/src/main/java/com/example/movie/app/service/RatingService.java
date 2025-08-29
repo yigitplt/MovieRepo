@@ -33,4 +33,8 @@ public class RatingService {
             return ratingRepository.save(newRating);
         }
     }
+
+    public Optional<Rating> getRatingOfMovie(User user, Long movieId){
+        return ratingRepository.findByMovieIdAndUser(movieId, user);
+    }
 }

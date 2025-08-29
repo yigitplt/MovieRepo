@@ -1,21 +1,80 @@
-import { Box, Typography, Button, Grid, Avatar, Card, CardContent, Rating } from "@mui/material";
+import { Box, Typography, Button, Grid, Avatar, Card, CardContent, Rating, Stack } from "@mui/material";
 import { getMovieCredits, getMovieDetails } from "../../../lib/movies"; 
 import { StyledButton } from "@/src/components/ui/StyledButton";
 import Link from "next/link";
+import { getUserMovieLog } from "@/src/lib/logs";
+import { StyledRating } from "@/src/components/ui/Styledrating";
 
 type MovieDetailsProps = {
   params: { id: number };
 };
 
+function UserReviewCard({ log }: { log: any }) {
+  if (!log) return null;
+
+  return (
+    <Box
+      sx={{
+        bgcolor: '#1E1E2F', // Matches your StyledPaper background
+        color: '#FFFFFF',
+        p: { xs: 2, md: 3 }, // Responsive padding
+        borderRadius: '16px', // Matches your StyledPaper radius
+        mt: 4,
+        border: '1px solid #4D4D6B' // Subtle border like your text fields
+      }}
+    >
+      <Stack spacing={2}>
+        <Typography variant="h6" fontWeight="bold">
+          Your Review
+        </Typography>
+
+        {/* Section for Rating and Watch Date */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
+          <StyledRating
+            name="read-only-rating"
+            value={log.ratingValue} // Display the rating out of 10
+            max={10}
+            readOnly
+            precision={0.5}
+            size="small"
+          />
+          <Typography variant="body2" sx={{ color: '#8A8A9A' }}>
+            | Watched on: {new Date(log.watchDate).toLocaleDateString()}
+          </Typography>
+        </Box>
+
+        {/* Display the comment only if one exists */}
+        {log.comment && (
+          <Typography
+            variant="body1"
+            sx={{
+              bgcolor: '#14141F', // A slightly darker background for contrast
+              p: 2,
+              borderRadius: '8px',
+              border: '1px solid #2A2A3E',
+              lineHeight: 1.7,
+              fontStyle: 'italic',
+              color: '#ededed' // A slightly off-white for easier reading
+            }}
+          >
+            "{log.comment}"
+          </Typography>
+        )}
+      </Stack>
+    </Box>
+  );
+}
+
 export default async function MovieDetails({ params }: MovieDetailsProps) {
 
   const movie = await getMovieDetails(params.id);
   const credits = await getMovieCredits(params.id);
+  const review = await getUserMovieLog(params.id);
   
-
+  
   return (
     <Box sx={{ p: 4, display: "flex", gap: 4 }}>
-      {/* Poster */}
+      
       
         <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
           <Box
@@ -25,22 +84,27 @@ export default async function MovieDetails({ params }: MovieDetailsProps) {
             sx={{ borderRadius: 2, width: 280, boxShadow: 4 }}
           />
 
-          {/* Your custom button */}
+          
           <Link href={`/movie/${params.id}/log`} style={{ textDecoration: "none", width: "100%" }}>
-            <StyledButton fullWidth>
-              Add to your repo
-            </StyledButton>
+            {review ? (
+              <StyledButton fullWidth>
+                Update Review
+              </StyledButton>
+              ) : (
+                <StyledButton fullWidth>
+                  Add To Your Repo
+                </StyledButton>
+              )}
           </Link>
         </Box>
 
-
-      {/* Right Side Content */}
+      
       <Box sx={{ flex: 1, color: "white" }}>
         <Typography variant="h4" fontWeight="bold" gutterBottom>
           {movie.title}
         </Typography>
 
-        {/* Overview */}
+        
         <Typography variant="body1" sx={{ mb: 2 }}>
           {movie.overview}
         </Typography>
@@ -80,10 +144,9 @@ export default async function MovieDetails({ params }: MovieDetailsProps) {
               ))}
             </Grid>
         )}
-        </Grid>
 
-        
-        
+        {review && <UserReviewCard log={review} />}
+        </Grid>    
       </Box>
     </Box>
   );
