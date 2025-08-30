@@ -10,7 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/ratings")
@@ -26,12 +28,20 @@ public class RatingController {
         return ResponseEntity.ok(new RatingResponse(rating));
     }
 
-    @GetMapping("/{movieId}")
+    @GetMapping("/{movieId}/user")
     public ResponseEntity<RatingResponse> getUserRatingOfMovie(@AuthenticationPrincipal User user, @PathVariable Long movieId){
         Optional<Rating> rating = ratingService.getRatingOfMovie(user, movieId);
         return rating
                 .map(movierating -> ResponseEntity.ok(new RatingResponse(movierating)))
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{movieId}/all")
+    public ResponseEntity<List<RatingResponse>> getAllUserRatingsOfMovie(@PathVariable Long movieId){
+        List<Rating> ratings = ratingService.getAllRatingsOfMovie(movieId);
+        List<RatingResponse> res = ratings.stream().map(RatingResponse::new).toList();
+
+        return ResponseEntity.ok(res);
 
     }
 }

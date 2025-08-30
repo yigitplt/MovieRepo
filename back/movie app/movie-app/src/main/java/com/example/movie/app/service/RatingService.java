@@ -7,6 +7,7 @@ import com.example.movie.app.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,5 +37,9 @@ public class RatingService {
 
     public Optional<Rating> getRatingOfMovie(User user, Long movieId){
         return ratingRepository.findByMovieIdAndUser(movieId, user);
+    }
+
+    public List<Rating> getAllRatingsOfMovie(Long movieId){
+        return ratingRepository.findAllByMovieId(movieId);
     }
 }

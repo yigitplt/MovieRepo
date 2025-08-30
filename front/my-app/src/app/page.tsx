@@ -1,6 +1,6 @@
 import { getTrendingMovies } from "../lib/movies";
 import { Box, Typography, Grid } from "@mui/material";
-import MovieCard from "../components/ui/MovieCard";
+import MovieCard from "../components/MovieCard";
 
 type Movie = {
   id: number;

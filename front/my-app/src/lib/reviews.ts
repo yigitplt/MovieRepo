@@ -4,7 +4,7 @@ import axios from "axios";
 import axiosInstance from "./axiosInstance";
 import { cookies } from 'next/headers';
 
-export async function getUserMovieLog(movieId: number) {
+export async function getUserMovieReview(movieId: number) {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get('jwt');
@@ -13,7 +13,7 @@ export async function getUserMovieLog(movieId: number) {
       return null;
     }
 
-    const res = await axiosInstance.get(`/ratings/${movieId}`, {
+    const res = await axiosInstance.get(`/ratings/${movieId}/user`, {
       headers: {
         Cookie: `jwt=${token.value}`
       }
@@ -28,4 +28,14 @@ export async function getUserMovieLog(movieId: number) {
     
     throw error;
   }
+}
+
+export async function getAllUserMovieReviews(movieId: number) {
+  try{
+    const res = await axiosInstance.get(`/ratings/${movieId}/all`)
+    return res.data;
+  } catch (error) {
+      console.error(`Error fetching reviews for movie ${movieId}:`, error);
+      return []; 
+    }
 }

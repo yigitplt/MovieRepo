@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { TextField, Box, Grid, Card, CardMedia, CardContent, Typography } from "@mui/material";
 import Link from "next/link";
 import debounce from "lodash.debounce";
-import MovieCard from "@/src/components/ui/MovieCard";
+import MovieCard from "@/src/components/MovieCard";
 
 
 

@@ -2,74 +2,20 @@ import { Box, Typography, Button, Grid, Avatar, Card, CardContent, Rating, Stack
 import { getMovieCredits, getMovieDetails } from "../../../lib/movies"; 
 import { StyledButton } from "@/src/components/ui/StyledButton";
 import Link from "next/link";
-import { getUserMovieLog } from "@/src/lib/logs";
+import { getUserMovieReview } from "@/src/lib/reviews";
 import { StyledRating } from "@/src/components/ui/Styledrating";
+import ReviewCard from "@/src/components/ReviewCard";
 
 type MovieDetailsProps = {
   params: { id: number };
 };
 
-function UserReviewCard({ log }: { log: any }) {
-  if (!log) return null;
-
-  return (
-    <Box
-      sx={{
-        bgcolor: '#1E1E2F', 
-        color: '#FFFFFF',
-        p: { xs: 2, md: 3 }, 
-        borderRadius: '16px', 
-        mt: 4,
-        border: '1px solid #4D4D6B' 
-      }}
-    >
-      <Stack spacing={2}>
-        <Typography variant="h6" fontWeight="bold">
-          Your Review
-        </Typography>
-
-        
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
-          <StyledRating
-            name="read-only-rating"
-            value={log.ratingValue} 
-            max={10}
-            readOnly
-            precision={0.5}
-            size="small"
-          />
-          <Typography variant="body2" sx={{ color: '#8A8A9A' }}>
-            | Watched on: {new Date(log.watchDate).toLocaleDateString()}
-          </Typography>
-        </Box>
-
-        
-        {log.comment && (
-          <Typography
-            variant="body1"
-            sx={{
-              bgcolor: '#14141F', 
-              p: 2,
-              borderRadius: '8px',
-              border: '1px solid #2A2A3E',
-              lineHeight: 1.7,
-              fontStyle: 'italic',
-              color: '#ededed' 
-            }}
-          >
-            "{log.comment}"
-          </Typography>
-        )}
-      </Stack>
-    </Box>
-  );
-}
 
 export default async function MovieDetails({ params }: MovieDetailsProps) {
 
   const movie = await getMovieDetails(params.id);
   const credits = await getMovieCredits(params.id);
-  const review = await getUserMovieLog(params.id);
+  const review = await getUserMovieReview(params.id);
   
   
   return (
@@ -145,7 +91,27 @@ export default async function MovieDetails({ params }: MovieDetailsProps) {
             </Grid>
         )}
 
-        {review && <UserReviewCard log={review} />}
+        {review && <ReviewCard review={review} title="Your Review" />}
+
+        <Grid size={{ xs: 12, sm: 6}}>
+            <Link href={`/movie/${params.id}/reviews`} passHref>
+              <Button
+                variant="outlined"         
+                sx={{
+                  color: '#9E88FF',
+                  borderColor: '#9E88FF',
+                  borderRadius: '8px',
+                  py: 1,
+                  '&:hover': {
+                    backgroundColor: 'rgba(158, 136, 255, 0.1)',
+                    borderColor: '#9E88FF',
+                  },
+                }}
+              >
+                Show All User Reviews
+              </Button>
+            </Link>
+          </Grid>
         </Grid>    
       </Box>
     </Box>
