@@ -40,8 +40,6 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // For a simple setup, you can return a default role.
-        // For a more advanced setup, you can add roles/authorities to the User entity.
         return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 

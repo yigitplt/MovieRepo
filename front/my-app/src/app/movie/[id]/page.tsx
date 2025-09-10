@@ -5,6 +5,8 @@ import Link from "next/link";
 import { getUserMovieReview } from "@/src/lib/reviews";
 import { StyledRating } from "@/src/components/ui/Styledrating";
 import ReviewCard from "@/src/components/ReviewCard";
+import WatchlistButton from "@/src/components/WatchlistButton";
+import { getWatchlistStatus } from "@/src/lib/watchlist";
 
 type MovieDetailsProps = {
   params: { id: number };
@@ -16,13 +18,14 @@ export default async function MovieDetails({ params }: MovieDetailsProps) {
   const movie = await getMovieDetails(params.id);
   const credits = await getMovieCredits(params.id);
   const review = await getUserMovieReview(params.id);
+  const watchlistStatus = await getWatchlistStatus(params.id);
   
   
   return (
     <Box sx={{ p: 4, display: "flex", gap: 4 }}>
       
       
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2 }}>
+        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
           <Box
             component="img"
             src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -42,6 +45,11 @@ export default async function MovieDetails({ params }: MovieDetailsProps) {
                 </StyledButton>
               )}
           </Link>
+
+          <WatchlistButton 
+          movieId={params.id} 
+          initialIsOnWatchlist={watchlistStatus.isOnWatchlist} 
+          />
         </Box>
 
       
