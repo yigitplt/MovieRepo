@@ -18,6 +18,7 @@ import { styled } from "@mui/material";
 import theme from "@/theme";
 import { set } from "date-fns";
 import { StyledRating } from "./ui/Styledrating";
+import { useRouter } from "next/navigation";
 
 
 export default function MovieLog({movieId}: {movieId: number}) {
@@ -26,6 +27,8 @@ export default function MovieLog({movieId}: {movieId: number}) {
     const [watchDate, setWatchDate] = useState(new Date());
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState<boolean>(false);
+
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,8 +44,8 @@ export default function MovieLog({movieId}: {movieId: number}) {
 
         try {
             const response = await axiosInstance.post('/ratings', payload);
-
             setSuccess(true);
+            router.push('/movie/' + movieId);
         } catch (err) {
             console.error('Failed to submit log:', err);
             setError('Failed to submit your log. Please try again.');

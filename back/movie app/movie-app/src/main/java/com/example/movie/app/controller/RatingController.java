@@ -42,6 +42,13 @@ public class RatingController {
         List<RatingResponse> res = ratings.stream().map(RatingResponse::new).toList();
 
         return ResponseEntity.ok(res);
+    }
 
+    @GetMapping()
+    public ResponseEntity<List<RatingResponse>> getAllRatingsOfUser(@AuthenticationPrincipal User user){
+        List<Rating> ratings = ratingService.getAllRatingsOfUser(user);
+        List<RatingResponse> res = ratings.stream().map(RatingResponse::new).toList();
+
+        return ResponseEntity.ok(res);
     }
 }

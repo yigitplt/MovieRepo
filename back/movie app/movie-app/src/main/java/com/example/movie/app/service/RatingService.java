@@ -42,4 +42,8 @@ public class RatingService {
     public List<Rating> getAllRatingsOfMovie(Long movieId){
         return ratingRepository.findAllByMovieId(movieId);
     }
+
+    public List<Rating> getAllRatingsOfUser(User user){
+        return ratingRepository.findByUser(user);
+    }
 }
