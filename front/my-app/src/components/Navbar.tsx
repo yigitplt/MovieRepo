@@ -1,11 +1,9 @@
 "use client";
 
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
-import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import axiosInstance from "../lib/axiosInstance";
-import { ca } from "date-fns/locale";
 
 export default function Navbar() {
 
@@ -34,6 +32,9 @@ export default function Navbar() {
         </Typography>
 
         <Box>
+          <Button color="inherit" component={Link} href="/discover">
+            Discover
+          </Button>
           <Button color="inherit" component={Link} href="/search">
             Search
           </Button>

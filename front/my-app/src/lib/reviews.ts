@@ -1,6 +1,3 @@
-// src/lib/logs.ts
-
-import axios from "axios";
 import axiosInstance from "./axiosInstance";
 import { cookies } from 'next/headers';
 
