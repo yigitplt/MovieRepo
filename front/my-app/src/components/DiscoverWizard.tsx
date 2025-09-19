@@ -4,8 +4,15 @@ import { getRecommendations } from '../lib/recommendations';
 import { StyledButton } from './ui/StyledButton';
 import MovieCard from './MovieCard';
 
-const moodOptions = { "😂 Laugh": "35", "😱 Thrill": "53", "💥 Action": "28", "💖 Romance": "10749" };
-const timeOptions = { "Quick Watch (< 1h 45m)": 105, "Standard Movie (~2h)": 135, "An Epic (> 2h 15m)": null };
+const moodOptions = { "Action": "28", "Adventure": "12", "Animation": "16", "Comedy": "35", "Crime": "80", 
+    "Documentary": "99", "Drama": "18", "Family": "10751", "Fantasy": "14", "History": "36", "Horror": "27",
+    "Music": "10402", "Mystery": "9648", "Romance": "10749", "Science Fiction": "878", "TV Movie": "10770",
+    "Thriller": "53", "War": "10752", "Western": "37" };
+
+const timeOptions = { "Quick Watch (< 1h 45m)": {lte: 105},
+    "Standard Movie (~2h)": {gte: 106, lte: 135}, 
+    "An Epic (> 2h 15m)": {gte: 136} };
+
 const eraOptions = {
     "Brand New (2020s)": { gte: "2020-01-01", lte: "" },
     "A 2000s Gem": { gte: "2000-01-01", lte: "2009-12-31" },
@@ -78,12 +85,14 @@ export default function DiscoverWizard(){
 
     switch (step) {
         case 1:
-            return <Question title="Who are you watching with?" options={["Just Me", "With a Partner", "With Friends"]} onSelect={(val) => handleSelect('social', val)} />;
+            return <Question title="Pick a genre" options={moodOptions} onSelect={(val) => handleSelect('genreId', val)} />;
         case 2:
-            return <Question title="What's the mood for tonight?" options={moodOptions} onSelect={(val) => handleSelect('genreId', val)} />;
+            return <Question title="How much time do you have?" options={timeOptions} onSelect={(val) => {
+                const finalPrefs = {...preferences, runtimeGte: val.gte, runtimeLte: val.lte};
+                setPreferences(finalPrefs);
+                setStep(3);
+            }} />;
         case 3:
-            return <Question title="How much time do you have?" options={timeOptions} onSelect={(val) => handleSelect('maxRuntime', val)} />;
-        case 4:
             return <Question title="Feeling new or nostalgic?" options={eraOptions} onSelect={(val) => {
                 const finalPrefs = { ...preferences, releaseDateGte: val.gte, releaseDateLte: val.lte };
                 setPreferences(finalPrefs);

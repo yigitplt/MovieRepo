@@ -7,7 +7,8 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   
   const genreId = searchParams.get('with_genres');
-  const maxRuntime = searchParams.get('with_runtime.lte');
+  const runtimeLte = searchParams.get('with_runtime.lte');
+  const runtimeGte = searchParams.get('with_runtime.gte');
   const releaseDateGte = searchParams.get('primary_release_date.gte');
   const releaseDateLte = searchParams.get('primary_release_date.lte');
 
@@ -17,7 +18,8 @@ export async function GET(request: Request) {
   });
 
   if (genreId) tmdbParams.append('with_genres', genreId);
-  if (maxRuntime) tmdbParams.append('with_runtime.lte', maxRuntime);
+  if (runtimeLte) tmdbParams.append('with_runtime.lte', runtimeLte);
+  if (runtimeGte) tmdbParams.append('with_runtime.gte', runtimeGte);
   if (releaseDateGte) tmdbParams.append('primary_release_date.gte', releaseDateGte);
   if (releaseDateLte) tmdbParams.append('primary_release_date.lte', releaseDateLte);
 

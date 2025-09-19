@@ -1,6 +1,7 @@
 type MoviePreferences = {
     genreId: string;
-    maxRuntime?: number;
+    runtimeGte?: number;
+    runtimeLte?: number;
     releaseDateGte?: string;
     releaseDateLte?: string;
 };
@@ -11,8 +12,11 @@ export async function getRecommendations(preferences: MoviePreferences) {
         with_genres: preferences.genreId,
     });
 
-    if (preferences.maxRuntime) {
-        params.append('with_runtime.lte', String(preferences.maxRuntime));
+    if (preferences.runtimeGte) {
+        params.append('with_runtime.gte', String(preferences.runtimeGte));
+    }
+    if (preferences.runtimeLte) {
+        params.append('with_runtime.lte', String(preferences.runtimeLte));
     }
     if (preferences.releaseDateGte) {
         params.append('primary_release_date.gte', preferences.releaseDateGte);
