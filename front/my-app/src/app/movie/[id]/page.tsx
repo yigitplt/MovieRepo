@@ -91,13 +91,13 @@ export default async function MovieDetails({ params }: MovieDetailsProps) {
               </Stack>
             </Stack>
 
-            {/* Overview */}
+            
             <Box>
               <Typography variant="h5" fontWeight="bold" gutterBottom>Overview</Typography>
               <Typography variant="body1">{movie.overview}</Typography>
             </Box>
 
-            {/* Cast */}
+            
             {credits.cast.length > 0 && (
               <Box>
                 <Typography variant="h5" fontWeight="bold" gutterBottom>Cast</Typography>

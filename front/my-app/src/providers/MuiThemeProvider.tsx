@@ -11,7 +11,6 @@ export default function MuiThemeProvider({
 }) {
   return (
     <ThemeProvider theme={theme}>
-      {/* CssBaseline provides a consistent baseline for styling */}
       <CssBaseline />
       {children}
     </ThemeProvider>
