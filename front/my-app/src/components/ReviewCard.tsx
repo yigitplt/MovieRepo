@@ -37,10 +37,8 @@ export default function ReviewCard({ review, title }: ReviewCardProps) {
         border: '1px solid #4D4D6B',
       }}
     >
-      <Stack spacing={2}>
-        {/* === Conditional Header === */}
+      <Stack spacing={2}>        
         {title ? (
-          // If a title is provided, display it
           <Typography variant="h6" fontWeight="bold">
             {title}
           </Typography>

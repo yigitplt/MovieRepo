@@ -13,7 +13,6 @@ export default async function ReviewsPage({ params }: ReviewsPageProps) {
 
   return (
     <Box sx={{ p: 4, display: 'flex', gap: 4, flexDirection: { xs: 'column', md: 'row' } }}>
-      {/* Left side: Movie Poster */}
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, flexShrink: 0 }}>
         <Box
           component="img"
@@ -23,7 +22,6 @@ export default async function ReviewsPage({ params }: ReviewsPageProps) {
         />
       </Box>
 
-      {/* Right side: Reviews List */}
       <Box sx={{ flex: 1, minWidth: 0 }}>
         <Stack spacing={3}>
           <Typography variant="h4" component="h1" fontWeight="bold">

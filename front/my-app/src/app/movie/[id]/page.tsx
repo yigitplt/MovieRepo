@@ -1,127 +1,138 @@
-import { Box, Typography, Button, Grid, Avatar, Card, CardContent, Rating, Stack } from "@mui/material";
-import { getMovieCredits, getMovieDetails } from "../../../lib/movies"; 
+import { Box, Typography, Button, Grid, Avatar, Card, CardContent, Chip, Stack, Divider } from "@mui/material";
+import { getMovieCredits, getMovieDetails } from "../../../lib/movies";
 import { StyledButton } from "@/src/components/ui/StyledButton";
 import Link from "next/link";
 import { getUserMovieReview } from "@/src/lib/reviews";
-import { StyledRating } from "@/src/components/ui/Styledrating";
 import ReviewCard from "@/src/components/ReviewCard";
 import WatchlistButton from "@/src/components/WatchlistButton";
 import { getWatchlistStatus } from "@/src/lib/watchlist";
+import { AccessTime, CalendarMonth, Star } from "@mui/icons-material";
+import theme from "@/theme";
 
 type MovieDetailsProps = {
   params: { id: number };
 };
 
-
 export default async function MovieDetails({ params }: MovieDetailsProps) {
-
   const movie = await getMovieDetails(params.id);
   const credits = await getMovieCredits(params.id);
   const review = await getUserMovieReview(params.id);
   const watchlistStatus = await getWatchlistStatus(params.id);
-  
-  
+
   return (
-    <Box sx={{ p: 4, display: "flex", gap: 4 }}>
-      
-      
-        <Box sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1 }}>
-          <Box
-            component="img"
-            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-            alt={movie.title}
-            sx={{ borderRadius: 2, width: 280, boxShadow: 4 }}
-          />
-
-          
-          <Link href={`/movie/${params.id}/log`} style={{ textDecoration: "none", width: "100%" }}>
-            {review ? (
-              <StyledButton fullWidth>
-                Update Review
-              </StyledButton>
-              ) : (
-                <StyledButton fullWidth>
-                  Add To Your Repo
-                </StyledButton>
-              )}
-          </Link>
-
-          <WatchlistButton 
-          movieId={params.id} 
-          initialIsOnWatchlist={watchlistStatus.isOnWatchlist} 
-          />
+    <Box sx={{ backgroundColor: '#14141F', color: '#FFFFFF' }}>
+      <Box
+        sx={{
+          position: 'relative',
+          height: { xs: '50vh', md: '60vh' },
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundImage: `url(https://image.tmdb.org/t/p/original${movie.backdrop_path})`,
+          display: 'flex',
+          alignItems: 'flex-end',
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: `linear-gradient(to top, #14141F 20%, transparent 100%)`,
+          },
+        }}
+      >
+        <Box sx={{ p: { xs: 2, md: 4 }, position: 'relative', zIndex: 1 }}>
+          <Typography variant="h2" component="h1" fontWeight="bold">
+            {movie.title}
+          </Typography>
+          <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+            {movie.genres.map((g: any) => (
+              <Chip key={g.id} label={g.name} variant="outlined" sx={{ color: '#FFFFFF', borderColor: 'rgba(255,255,255,0.5)' }} />
+            ))}
+          </Stack>
         </Box>
-
-      
-      <Box sx={{ flex: 1, color: "white" }}>
-        <Typography variant="h4" fontWeight="bold" gutterBottom>
-          {movie.title}
-        </Typography>
-
-        
-        <Typography variant="body1" sx={{ mb: 2 }}>
-          {movie.overview}
-        </Typography>
-
-        <Grid container spacing={2} sx={{ mb: 2 }}>
-          <Grid size={{ xs: 6, sm: 4, md: 3 }}>
-            <Typography><b>Rating:</b> {movie.vote_average.toFixed(1)}</Typography>
-            <Typography><b>Release year:</b> {movie.release_date?.split("-")[0]}</Typography>
-          </Grid>
-
-          <Grid size={{ xs: 6, sm: 4, md: 3 }}>
-            <Typography><b>Genres:</b> {movie.genres.map((g: any) => g.name).join(", ")}</Typography>
-            <Typography><b>Duration:</b> {movie.runtime} mins</Typography>
-          </Grid>
-
-          {credits.cast.length > 0 && (
-            <Grid container spacing={2}>
-              {credits.cast.slice(0, 6).map((member: any) => (
-                <Grid size={{ xs: 12, sm: 6, md: 4 }} key={member.id}>
-                  <Card sx={{ maxWidth: 280, bgcolor: "background.paper" }}>
-                    <CardContent sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-                      <Avatar
-                        src={
-                          member.profile_path
-                            ? `https://image.tmdb.org/t/p/w185${member.profile_path}`
-                            : "/default-avatar.png"
-                        }
-                        alt={member.name}
-                      />
-                      <Box>
-                        <Typography fontWeight="bold">{member.name}</Typography>
-                        <Typography variant="body2">{member.character}</Typography>
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-        )}
-
-        {review && <ReviewCard review={review} title="Your Review" />}
-
-        <Grid size={{ xs: 12, sm: 6}}>
-            <Link href={`/movie/${params.id}/reviews`} passHref>
-              <Button
-                variant="outlined"         
-                sx={{
-                  color: '#9E88FF',
-                  borderColor: '#9E88FF',
-                  borderRadius: '8px',
-                  py: 1,
-                  '&:hover': {
-                    backgroundColor: 'rgba(158, 136, 255, 0.1)',
-                    borderColor: '#9E88FF',
-                  },
-                }}
-              >
-                Show All User Reviews
-              </Button>
-            </Link>
-          </Grid>
-        </Grid>    
       </Box>
+
+      <Grid container spacing={4} sx={{ p: { xs: 2, md: 4 } }}>
+        <Grid size={{ xs: 12, md: 4}}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2, position: 'sticky', top: '20px' }}>
+            <Box
+              component="img"
+              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+              alt={movie.title}
+              sx={{ borderRadius: '12px', width: '100%', maxWidth: '300px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
+            />
+            <Link href={`/movie/${params.id}/log`} style={{ textDecoration: "none", width: "100%", maxWidth: '300px' }}>
+              <StyledButton fullWidth>
+                {review ? "Update Your Review" : "Add to Your Repo"}
+              </StyledButton>
+            </Link>
+            <WatchlistButton
+              movieId={params.id}
+              initialIsOnWatchlist={watchlistStatus.isOnWatchlist}
+            />
+          </Box>
+        </Grid>
+
+        <Grid size={{ xs: 12, md: 8}}>
+          <Stack spacing={4}>
+            <Stack direction="row" spacing={4} alignItems="center" divider={<Divider orientation="vertical" flexItem sx={{ borderColor: 'rgba(255,255,255,0.2)'}} />}>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <Star sx={{ color: theme.palette.secondary.main }} />
+                <Typography><b>{movie.vote_average.toFixed(1)}</b> / 10</Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <CalendarMonth sx={{ color: theme.palette.secondary.main }} />
+                <Typography>{movie.release_date?.split("-")[0]}</Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <AccessTime sx={{ color: theme.palette.secondary.main }} />
+                <Typography>{movie.runtime} mins</Typography>
+              </Stack>
+            </Stack>
+
+            {/* Overview */}
+            <Box>
+              <Typography variant="h5" fontWeight="bold" gutterBottom>Overview</Typography>
+              <Typography variant="body1">{movie.overview}</Typography>
+            </Box>
+
+            {/* Cast */}
+            {credits.cast.length > 0 && (
+              <Box>
+                <Typography variant="h5" fontWeight="bold" gutterBottom>Cast</Typography>
+                <Grid container spacing={2}>
+                  {credits.cast.slice(0, 6).map((member: any) => (
+                    <Grid size={{ xs: 12, sm: 4}} key={member.id}>
+                      <Card sx={{ bgcolor: '#1E1E2F', color: '#FFFFFF', display: 'flex', alignItems: 'center', p: 1 }}>
+                        <Avatar
+                          src={member.profile_path ? `https://image.tmdb.org/t/p/w185${member.profile_path}` : "/default-avatar.png"}
+                          alt={member.name}
+                          sx={{ width: 56, height: 56, mr: 2 }}
+                        />
+                        <Box>
+                          <Typography fontWeight="bold">{member.name}</Typography>
+                          <Typography variant="body2" sx={{color: '#8A8A9A'}}>{member.character}</Typography>
+                        </Box>
+                      </Card>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            )}
+
+            {review && <ReviewCard review={review} title="Your Review" />}
+            
+            <Box>
+               <Link href={`/movie/${params.id}/reviews`} passHref>
+                <Button variant="outlined" sx={{ color: theme.palette.secondary.main, borderColor: theme.palette.secondary.main }}>
+                  Show All User Reviews
+                </Button>
+              </Link>
+            </Box>
+          </Stack>
+        </Grid>
+      </Grid>
     </Box>
   );
 }

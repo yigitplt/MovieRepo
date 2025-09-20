@@ -29,7 +29,16 @@ export async function getUserMovieReview(movieId: number) {
 
 export async function getAllUserMovieReviews(movieId: number) {
   try{
-    const res = await axiosInstance.get(`/ratings/${movieId}/all`)
+    const cookie = await cookies();
+    const token = cookie.get('jwt');
+
+    if(!token){
+      return [];
+    }
+
+    const res = await axiosInstance.get(`/ratings/${movieId}/all`, {
+      headers: { Cookie: `jwt=${token.value}` }
+    });
     return res.data;
   } catch (error) {
       console.error(`Error fetching reviews for movie ${movieId}:`, error);
