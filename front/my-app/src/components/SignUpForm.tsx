@@ -61,7 +61,7 @@ export default function SignUpForm() {
       <StyledPaper>
         <Box sx={{ mb: 4, textAlign: 'left' }}>
           <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', color: '#FFFFFF', mb: 1 }}>
-            Welcome to my app
+            Welcome to MovieRepo
           </Typography>
           <Typography variant="body2" sx={{ color: '#8A8A9A' }}>
             Fill in your details below to create an account

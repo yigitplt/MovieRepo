@@ -54,7 +54,7 @@ export default function LoginForm() {
             <StyledPaper>
                 <Box sx={{ mb: 4, textAlign: 'left' }}>
                     <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', color: '#FFFFFF', mb: 1 }}>
-                        Welcome Back
+                        Welcome Back To MovieRepo
                     </Typography>
                     <Typography variant="body2" sx={{ color: '#8A8A9A' }}>
                         Please enter your credentials to log in
