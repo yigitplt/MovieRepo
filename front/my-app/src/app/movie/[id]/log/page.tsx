@@ -2,12 +2,10 @@ import { Box } from "@mui/material";
 import { getMovieDetails } from "../../../../lib/movies";
 import MovieLog from "@/src/components/MovieLog";
 
-type MovieLogPageProps = {
-    params: { id: number };
-};
 
-export default async function MovieLogPage({ params }: MovieLogPageProps) {
-    const movie = await getMovieDetails(params.id);
+export default async function MovieLogPage({ params } : {params: Promise<{ id: string }>}) {
+    const { id } = await params;
+    const movie = await getMovieDetails(parseInt(id));
 
     return (
         <Box sx={{ p: 4, display: "flex", gap: 4, flexDirection: { xs: "column", md: "row" }, alignItems: "center" }}>

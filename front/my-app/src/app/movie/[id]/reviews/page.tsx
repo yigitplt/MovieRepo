@@ -1,16 +1,14 @@
 import { Box, Typography, Stack } from "@mui/material";
 import { getMovieDetails } from "@/src/lib/movies";
 import { getAllUserMovieReviews } from "@/src/lib/reviews";
-import ReviewsList from "@/src/components/ReviewsList"; // Import the new component
+import ReviewsList from "@/src/components/ReviewsList"; 
 
-type ReviewsPageProps = {
-  params: { id: number };
-};
 
-export default async function ReviewsPage({ params }: ReviewsPageProps) {
+export default async function ReviewsPage({ params } : {params: Promise<{ id: string }>}) {
 
-  const movie = await getMovieDetails(params.id);
-  const reviews = await getAllUserMovieReviews(params.id);
+  const { id } = await params;
+  const movie = await getMovieDetails(parseInt(id));
+  const reviews = await getAllUserMovieReviews(parseInt(id));
 
   return (
     <Box sx={{ p: 4, display: 'flex', gap: 4, flexDirection: { xs: 'column', md: 'row' } }}>

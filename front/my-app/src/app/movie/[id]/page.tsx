@@ -9,14 +9,14 @@ import { getWatchlistStatus } from "@/src/lib/watchlist";
 import { AccessTime, CalendarMonth, Star } from "@mui/icons-material";
 import theme from "@/theme";
 
-export default async function MovieDetails({ params } : { params: { id: number }}) {
+export default async function MovieDetails({ params } : {params: Promise<{ id: string }>}) {
 
   const { id } = await params;
 
-  const movie = await getMovieDetails(id);
-  const credits = await getMovieCredits(id);
-  const review = await getUserMovieReview(id);
-  const watchlistStatus = await getWatchlistStatus(id);
+  const movie = await getMovieDetails(parseInt(id));
+  const credits = await getMovieCredits(parseInt(id));
+  const review = await getUserMovieReview(parseInt(id));
+  const watchlistStatus = await getWatchlistStatus(parseInt(id));
 
   return (
     <Box sx={{ backgroundColor: '#14141F', color: '#FFFFFF' }}>
@@ -67,7 +67,7 @@ export default async function MovieDetails({ params } : { params: { id: number }
               </StyledButton>
             </Link>
             <WatchlistButton
-              movieId={id}
+              movieId={parseInt(id)}
               initialIsOnWatchlist={watchlistStatus.isOnWatchlist}
             />
           </Box>
