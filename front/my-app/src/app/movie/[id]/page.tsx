@@ -9,15 +9,14 @@ import { getWatchlistStatus } from "@/src/lib/watchlist";
 import { AccessTime, CalendarMonth, Star } from "@mui/icons-material";
 import theme from "@/theme";
 
-type MovieDetailsProps = {
-  params: { id: number };
-};
+export default async function MovieDetails({ params } : { params: { id: number }}) {
 
-export default async function MovieDetails({ params }: MovieDetailsProps) {
-  const movie = await getMovieDetails(params.id);
-  const credits = await getMovieCredits(params.id);
-  const review = await getUserMovieReview(params.id);
-  const watchlistStatus = await getWatchlistStatus(params.id);
+  const { id } = await params;
+
+  const movie = await getMovieDetails(id);
+  const credits = await getMovieCredits(id);
+  const review = await getUserMovieReview(id);
+  const watchlistStatus = await getWatchlistStatus(id);
 
   return (
     <Box sx={{ backgroundColor: '#14141F', color: '#FFFFFF' }}>
@@ -62,13 +61,13 @@ export default async function MovieDetails({ params }: MovieDetailsProps) {
               alt={movie.title}
               sx={{ borderRadius: '12px', width: '100%', maxWidth: '300px', boxShadow: '0 10px 30px rgba(0,0,0,0.5)' }}
             />
-            <Link href={`/movie/${params.id}/log`} style={{ textDecoration: "none", width: "100%", maxWidth: '300px' }}>
+            <Link href={`/movie/${id}/log`} style={{ textDecoration: "none", width: "100%", maxWidth: '300px' }}>
               <StyledButton fullWidth>
                 {review ? "Update Your Review" : "Add to Your Repo"}
               </StyledButton>
             </Link>
             <WatchlistButton
-              movieId={params.id}
+              movieId={id}
               initialIsOnWatchlist={watchlistStatus.isOnWatchlist}
             />
           </Box>
@@ -124,7 +123,7 @@ export default async function MovieDetails({ params }: MovieDetailsProps) {
             {review && <ReviewCard review={review} title="Your Review" />}
             
             <Box>
-               <Link href={`/movie/${params.id}/reviews`} passHref>
+               <Link href={`/movie/${id}/reviews`} passHref>
                 <Button variant="outlined" sx={{ color: theme.palette.secondary.main, borderColor: theme.palette.secondary.main }}>
                   Show All User Reviews
                 </Button>

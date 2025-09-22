@@ -52,9 +52,9 @@ public class AuthService {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         Cookie jwtCookie = new Cookie("jwt", jwt);
         jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(false); // Should be true in production
+        jwtCookie.setSecure(true); // Should be true in production
         jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(24 * 60 * 60); // e.g., 1 day
+        jwtCookie.setMaxAge(24 * 60 * 60);
         response.addCookie(jwtCookie);
         return LoginResponse.builder().token("Success").build();
     }
@@ -66,7 +66,7 @@ public class AuthService {
 
         Cookie jwtCookie = new Cookie("jwt", null);
         jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(false); // Must match the secure setting of the original cookie
+        jwtCookie.setSecure(true); // Must match the secure setting of the original cookie
         jwtCookie.setPath("/");
         jwtCookie.setMaxAge(0);
         response.addCookie(jwtCookie);
