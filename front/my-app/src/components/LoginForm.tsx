@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import axiosInstance from "../lib/axiosInstance";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { StyledPaper } from "./ui/StyledPaper";
 import { StyledButton } from "./ui/StyledButton";
 import { StyledTextField } from "./ui/StyledTextField";
@@ -24,10 +24,13 @@ export default function LoginForm() {
     });
 
     const [message, setMessage] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
 
     const onSubmit = async (data: LoginFormValues) => {
+        setIsLoading(true);
+        setMessage(null);
         try {
             const res = await axiosInstance.post('/auth/login', data);
             router.push('/');
@@ -37,7 +40,10 @@ export default function LoginForm() {
             } else{
                 setMessage("Error: Unable to connect to the server.");
             }
+        }finally {
+            setIsLoading(false); 
         }
+
     }
 
     return(
@@ -93,8 +99,8 @@ export default function LoginForm() {
                             {message}
                         </Typography>
                     )}
-                    <StyledButton type="submit" fullWidth variant="contained" sx={{ mt: 3 }}>
-                        Log In
+                    <StyledButton type="submit" fullWidth variant="contained" sx={{ mt: 3 }} disabled={isLoading}>
+                        {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Log In'}
                     </StyledButton>
                     <Typography variant="body2" sx={{ mt: 2, textAlign: 'center', color: '#8A8A9A' }}>
                         Don't have an account? <a href="/signup" style={{ color: '#6B4EE8' }}>Sign Up</a>

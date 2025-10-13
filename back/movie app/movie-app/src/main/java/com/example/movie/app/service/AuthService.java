@@ -8,6 +8,7 @@ import com.example.movie.app.repository.UserRepository;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -49,26 +50,34 @@ public class AuthService {
         UserDetails user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid username or password."));
         String jwt = jwtService.generateToken(user);
+
+        ResponseCookie jwtCookie = ResponseCookie.from("jwt", jwt)
+                .httpOnly(true)
+                .secure(true) // Should always be true in production
+                .path("/")
+                .maxAge(24 * 60 * 60) // 1 day
+                .sameSite("None")
+                .domain("movierepo.com")
+                .build();
+
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-        Cookie jwtCookie = new Cookie("jwt", jwt);
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(true); // Should be true in production
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(24 * 60 * 60);
-        response.addCookie(jwtCookie);
+        response.addHeader("Set-Cookie", jwtCookie.toString());
+
         return LoginResponse.builder().token("Success").build();
     }
 
     public void logout(HttpServletResponse response) {
-
         SecurityContextHolder.clearContext();
 
+        ResponseCookie jwtCookie = ResponseCookie.from("jwt", null)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0) // Expire immediately
+                .sameSite("None")
+                .domain("movierepo.com")
+                .build();
 
-        Cookie jwtCookie = new Cookie("jwt", null);
-        jwtCookie.setHttpOnly(true);
-        jwtCookie.setSecure(true); // Must match the secure setting of the original cookie
-        jwtCookie.setPath("/");
-        jwtCookie.setMaxAge(0);
-        response.addCookie(jwtCookie);
+        response.addHeader("Set-Cookie", jwtCookie.toString());
     }
 }

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import { getAllReviewsOfUser } from "@/src/lib/reviews"; // Assuming this is the correct import from your files
+import { getAllReviewsOfUser } from "@/src/lib/reviews"; 
 import { getWatchlist } from "@/src/lib/watchlist";
 import { getMovieDetails } from "@/src/lib/movies";
 import ProfileTabs from "@/src/components/ProfileTabs";

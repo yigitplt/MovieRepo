@@ -2,7 +2,7 @@
 
 import axiosInstance from '@/src/lib/axiosInstance';
 import { Mail, Person, Lock } from '@mui/icons-material';
-import { Box, Button, Checkbox, InputAdornment, Paper, styled, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, InputAdornment, Paper, styled, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { StyledPaper } from './ui/StyledPaper';
@@ -27,10 +27,13 @@ export default function SignUpForm() {
     })
 
     const [message, setMessage] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
 
     const onSubmit = async (data: SignUpFormValues) => {
+        setIsLoading(true);
+        setMessage(null);
         try{
             const res = await axiosInstance.post('/auth/signup', data);
             setMessage(`User ${res.data.username} created successfully!`);
@@ -44,6 +47,8 @@ export default function SignUpForm() {
             } else{
                 setMessage("Error: Unable to connect to the server.");
             }
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -159,9 +164,9 @@ export default function SignUpForm() {
               {message}
             </Typography>
           )}
-          <StyledButton type="submit" fullWidth>
-            Register Account
-          </StyledButton>
+          <StyledButton type="submit" fullWidth disabled={isLoading}>
+                {isLoading ? <CircularProgress size={24} color="inherit" /> : 'Register Account'}
+              </StyledButton>
           <Typography variant="body2" sx={{ mt: 2, textAlign: 'center', color: '#8A8A9A' }}>
             Already have an account? <a href="/login" style={{ color: '#6B4EE8' }}>Login</a>
           </Typography>
