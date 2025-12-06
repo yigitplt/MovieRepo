@@ -45,7 +45,7 @@ export default function SignUpForm() {
             if(error.response) {
                 setMessage(error.response.data.message || "An error occurred during signup.");
             } else{
-                setMessage("Error: Unable to connect to the server.");
+                setMessage("Unable to connect. The server might be waking up, please try again after a few seconds.");
             }
         } finally {
             setIsLoading(false);

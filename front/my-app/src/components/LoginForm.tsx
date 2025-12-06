@@ -38,7 +38,7 @@ export default function LoginForm() {
             if(error.response) {
                 setMessage(error.response.data.message || "Wrong username or password.");
             } else{
-                setMessage("Error: Unable to connect to the server.");
+                setMessage("Unable to connect. The server might be waking up, please try again after a few seconds.");
             }
         }finally {
             setIsLoading(false); 
